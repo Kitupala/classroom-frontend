@@ -13,15 +13,6 @@
   }
 }
 
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
-}
-
 :root {
     --background: oklch(1.0000 0 0);
     --foreground: oklch(0.1448 0 0);
@@ -298,10 +289,14 @@
 
     .class-form-card {
         @apply max-w-3xl gap-2 w-full mx-auto relative overflow-hidden border shadow-sm border-foreground/20;
+
+        .asterisk {
+            @apply text-xs text-orange-600 -mt-2;
+        }
     }
 
     .upload-dropzone {
-        @apply flex flex-col items-center justify-center gap-4 min-h-40 border-2 border-dashed border-foreground/20 bg-primary/5 w-full mt-3 cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed rounded-md;
+        @apply flex flex-col items-center justify-center gap-4 min-h-40 border-2 border-dashed border-foreground/20 bg-primary/5 w-full cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed rounded-md;
 
         .upload-prompt {
             @apply flex flex-col sm:flex-row items-center justify-center gap-4 p-5;
@@ -332,7 +327,7 @@
         }
 
         button {
-            @apply absolute top-2 right-3 z-10 cursor-pointer;
+            @apply absolute top-2 right-3 z-10 cursor-pointer rounded-full bg-rose-500 p-1 shadow-sm transition hover:bg-rose-600 disabled:opacity-50;
         }
     }
 
