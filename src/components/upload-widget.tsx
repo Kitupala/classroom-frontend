@@ -116,7 +116,6 @@ const UploadWidget = ({
             type="button"
             onClick={removeFromCloudinary}
             disabled={isRemoving || disabled}
-            className=""
           >
             <X className="h-4 w-4" />
           </button>
