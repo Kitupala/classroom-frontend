@@ -5,6 +5,8 @@ import {
   CLOUDINARY_CLOUD_NAME,
   CLOUDINARY_UPLOAD_PRESET,
   CLOUDINARY_DELETE_URL,
+  MAX_FILE_SIZE,
+  ALLOWED_TYPES,
 } from "@/constants";
 
 const UploadWidget = ({
@@ -39,8 +41,8 @@ const UploadWidget = ({
           uploadPreset: CLOUDINARY_UPLOAD_PRESET,
           multiple: false,
           folder: "classroom-uploads",
-          maxFileSize: 5000000,
-          clientAllowedFormats: ["png", "jpg", "jpeg", "webp"],
+          maxFileSize: MAX_FILE_SIZE,
+          clientAllowedFormats: ALLOWED_TYPES.map((type) => type.split("/")[1]),
           return_delete_token: true,
         },
         (error, result) => {
@@ -86,7 +88,7 @@ const UploadWidget = ({
           headers: {
             "Content-Type": "application/x-www-form-urlencoded",
           },
-          body: `token=${deleteToken}`,
+          body: new URLSearchParams({ token: deleteToken }).toString(),
         });
 
         if (!response.ok) {
@@ -136,7 +138,7 @@ const UploadWidget = ({
             <UploadCloud className="icon" />
             <div>
               <p>Click to upload photo</p>
-              <p>PNG / JPG up to 5MB</p>
+              <p>PNG / JPG / WEBP up to 3MB</p>
             </div>
           </div>
         </div>

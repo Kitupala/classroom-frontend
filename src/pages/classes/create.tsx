@@ -170,6 +170,7 @@ const ClassesCreate = () => {
                             : null
                         }
                         onChange={handleBannerChange}
+                        disabled={isLoading}
                       />
                       {fieldState.invalid && (
                         <FieldError errors={[fieldState.error]} />
