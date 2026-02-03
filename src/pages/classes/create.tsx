@@ -1,8 +1,12 @@
+import { BaseRecord, HttpError, useBack, useList } from "@refinedev/core";
+import { useForm } from "@refinedev/react-hook-form";
+import { Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+
 import { CreateView } from "@/components/refine-ui/views/create-view.tsx";
 import { Breadcrumb } from "@/components/refine-ui/layout/breadcrumb.tsx";
-import { useBack } from "@refinedev/core";
 import { Separator } from "@/components/ui/separator.tsx";
-
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -13,7 +17,6 @@ import {
 } from "@/components/ui/card";
 import {
   Field,
-  FieldDescription,
   FieldError,
   FieldGroup,
   FieldLabel,
@@ -25,13 +28,6 @@ import {
   InputGroupText,
   InputGroupTextarea,
 } from "@/components/ui/input-group";
-
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Controller } from "react-hook-form";
-import { useForm } from "@refinedev/react-hook-form";
-import { BaseRecord, HttpError } from "@refinedev/core";
-import * as z from "zod";
-import { classSchema } from "@/lib/schema.ts";
 import {
   Select,
   SelectContent,
@@ -40,9 +36,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select.tsx";
-import { subjects, teachers } from "@/constants";
 import UploadWidget from "@/components/upload-widget.tsx";
-import { toast } from "sonner";
+
+import { classSchema } from "@/lib/schema.ts";
+import { Subject, User } from "@/types";
 
 // Define the type for form data based on the schema
 type ClassFormValues = z.infer<typeof classSchema>;
@@ -65,26 +62,10 @@ const ClassesCreate = () => {
     refineCoreProps: {
       resource: "classes",
       action: "create",
-      redirect: "list", // Redirect to list after successful creation
-      onMutationSuccess: () => {
-        toast.success("Class created successfully!");
-      },
-      onMutationError: (error) => {
-        toast.error(
-          error?.message || "Failed to create class. Please try again.",
-        );
-      },
+      redirect: "list",
     },
     defaultValues: {
-      name: "",
-      subjectId: 0,
-      teacherId: "",
-      capacity: 30,
       status: "active",
-      description: "",
-      bannerUrl: "",
-      bannerCldPubId: "",
-      schedules: [],
     },
   });
 
@@ -113,6 +94,20 @@ const ClassesCreate = () => {
       console.error("Form submission error:", error);
     }
   };
+
+  const { query: subjectsQuery } = useList<Subject>({
+    resource: "subjects",
+    pagination: { pageSize: 100 },
+  });
+
+  const { query: teachersQuery } = useList<User>({
+    resource: "users",
+    filters: [{ field: "role", operator: "eq", value: "teacher" }],
+    pagination: { pageSize: 100 },
+  });
+
+  const subjects = subjectsQuery.data?.data || [];
+  const teachers = teachersQuery.data?.data || [];
 
   const isLoading = isSubmitting || formLoading;
 
@@ -413,7 +408,7 @@ const ClassesCreate = () => {
                 form="create-class-form"
                 disabled={isLoading}
               >
-                {isLoading ? "Creating..." : "Submit"}
+                {isLoading ? "Creating..." : "Create Class"}
               </Button>
             </Field>
           </CardFooter>
