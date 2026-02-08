@@ -10,10 +10,14 @@ import { compass } from "@cloudinary/url-gen/qualifiers/gravity";
 
 const cld = new Cloudinary({ cloud: { cloudName: CLOUDINARY_CLOUD_NAME } });
 
-export const bannerImage = (imageCldPubId: string, name: string) =>
-  cld
+export const bannerImage = (imageCldPubId: string, name: string) => {
+  if (!imageCldPubId) {
+    return null;
+  }
+
+  return cld
     .image(imageCldPubId)
-    .resize(fill())
+    .resize(fill().width(1200).height(400))
     .delivery(format("auto"))
     .delivery(quality("auto"))
     .delivery(dpr("auto"))
@@ -24,3 +28,4 @@ export const bannerImage = (imageCldPubId: string, name: string) =>
         ),
       ).position(new Position().gravity(compass("west")).offsetX(0.02)),
     );
+};

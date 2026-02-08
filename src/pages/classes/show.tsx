@@ -59,9 +59,9 @@ const ClassesShow = () => {
       <ShowViewHeader resource="classes" title="Class Details" />
 
       <div className="banner">
-        {bannerUrl ? (
+        {bannerUrl && bannerCldPubId ? (
           <AdvancedImage
-            cldImg={bannerImage(bannerCldPubId ?? "", name)}
+            cldImg={bannerImage(bannerCldPubId, name)!}
             alt="Banner image"
           />
         ) : (
@@ -131,6 +131,7 @@ const ClassesShow = () => {
           </ol>
         </div>
 
+        {/* TODO: Implement join class functionality */}
         <Button size="lg" className="w-full">
           Join Class
         </Button>

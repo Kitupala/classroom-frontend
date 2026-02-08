@@ -153,7 +153,6 @@ const ClassesList = () => {
         },
         {
           id: "details",
-          accessorKey: "details",
           size: 140,
           header: () => <p className="column-title">Details</p>,
           cell: ({ row }) => (
