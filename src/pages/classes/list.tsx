@@ -11,12 +11,13 @@ import {
   SelectValue,
 } from "@/components/ui/select.tsx";
 import { CreateButton } from "@/components/refine-ui/buttons/create.tsx";
+import { ShowButton } from "@/components/refine-ui/buttons/show.tsx";
 import { DataTable } from "@/components/refine-ui/data-table/data-table.tsx";
 import { useTable } from "@refinedev/react-table";
-import { ClassDetails, Subject, User } from "@/types";
 import { ColumnDef } from "@tanstack/react-table";
 import { Badge } from "@/components/ui/badge.tsx";
 import { useList } from "@refinedev/core";
+import { ClassDetails, Subject, User } from "@/types";
 
 const ClassesList = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -148,6 +149,21 @@ const ClassesList = () => {
             <span className="text-muted-foreground">
               {getValue<number>()} students
             </span>
+          ),
+        },
+        {
+          id: "details",
+          size: 140,
+          header: () => <p className="column-title">Details</p>,
+          cell: ({ row }) => (
+            <ShowButton
+              resource="classes"
+              recordItemId={row.original.id}
+              variant="outline"
+              size="sm"
+            >
+              View
+            </ShowButton>
           ),
         },
       ],
